@@ -27,17 +27,17 @@ let lapCount = 0;      // сколько кругов записано
 
 function formatTime(totalSeconds) {
     const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor(totalSeconds % 3600) / 60);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
     const hStr = String(hours).padStart(2, '0');
     const mStr = String(minutes).padStart(2, '0');
     const sStr = String(seconds).padStart(2, '0');
-    return '${hStr}:${mStr}:${sStr}';
+    return `${hStr}:${mStr}:${sStr}`;
 }
 
 function updateCircleProgress(circle, value, max) {
-    const offset = circumference - (value / max) * circumfrence;
+    const offset = circumference - (value / max) * circumference;
     circle.style.strokeDashoffset = offset;
 }
 
@@ -76,7 +76,30 @@ function stop() {
     stopBtn.disabled = true;
     lapBtn.disabled = true;
 }
-    
+function recordLap() {
+    lapCount++;
+    const lapItem = document.createElement("li");
+    lapItem.textContent = `Lap ${lapCount}:  ${formatTime(elapsedTime)}`;
 
+    lapList.insertBefore(lapItem,lapList.firstChild);
+
+    lapsContainer.style.display = "block";
+}
+function reset() {
+    stop();
+
+    elapsedTime = 0;
+    lapCount = 0;
+
+    updateDisplay();
+
+    lapList.innerHTML = "";
+
+    lapsContainer.style.display = "none";
+}
+startBtn.addEventListener("click", start);
+stopBtn.addEventListener("click", stop);
+lapBtn.addEventListener("click", recordLap);
+resetBtn.addEventListener("click", reset);
     
     
